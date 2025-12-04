@@ -25,6 +25,6 @@ class MainFrame(BasicFrame):
 
 if __name__ == '__main__':
     root = tk.Tk()
-    root.title("o mini beimei hong")
+    root.title("Daily Recorder")
     MainFrame().createFrame(root)
     root.mainloop()
