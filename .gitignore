@@ -1,2 +1,6 @@
 .records/
 __pycache__/
+build/
+dist/
+*.pyc
+*.spec
