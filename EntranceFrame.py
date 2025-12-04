@@ -5,7 +5,7 @@ from BasicFrame import BasicFrame
 class EntranceFrame(BasicFrame):
     def createWidgets(self, root):
         self.main_frame = ttk.Frame(root, padding=(3, 3, 12, 12))
-        self.main_frame.grid(column=1, row=2, sticky=(N, W, E, S))
+        self.main_frame.grid(column=0, row=1, sticky=(N, W, E, S))
 
         ttk.Label(self.main_frame, text="请选择操作：").grid(column=1, row=1, sticky=W)
         from StartRecordFrame import StartRecordFrame

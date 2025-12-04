@@ -13,7 +13,7 @@ class RecordFrame(BasicFrame):
 
     def createWidgets(self, root):
         self.main_frame = ttk.Frame(root, padding=(3, 3, 12, 12))
-        self.main_frame.grid(column=0, row=0, sticky=(N, W, E, S))
+        self.main_frame.grid(column=0, row=1, sticky=(N, W, E, S))
         
         self.yaml_message = YamlHandler(YamlHandler.record_dir,str(date.today())+'.yaml').read_yaml()
         if self.yaml_message is None:

@@ -9,7 +9,7 @@ from BasicFrame import BasicFrame
 class ShowRecordFrame(BasicFrame):
     def createWidgets(self, root):
         self.main_frame = ttk.Frame(root, padding=(3, 3, 12, 12))
-        self.main_frame.grid(column=0, row=0, sticky=(N, W, E, S))
+        self.main_frame.grid(column=0, row=1, sticky=(N, W, E, S))
         self.current_date = date.today()
         self.label_text = tk.StringVar()
         self.label_text.set(f"今日记录内容({str(self.current_date)})：")
