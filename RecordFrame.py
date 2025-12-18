@@ -24,8 +24,9 @@ class RecordFrame(BasicFrame):
         self.record_text = tk.StringVar()
         self.record_text.set(f"记录内容：{self.record_name}  当前次数：{self.yaml_message[self.record_name]}")
         ttk.Label(self.main_frame, textvariable=self.record_text).grid(column=1, row=1, sticky=W)
-        ttk.Button(self.main_frame, text="增加次数", command=lambda: self.update_count(True), bootstyle=PRIMARY).grid(column=1, row=2, sticky=W)
-        ttk.Button(self.main_frame, text="减少次数", command=lambda: self.update_count(False), bootstyle=PRIMARY).grid(column=2, row=2, sticky=W)
+        ttk.Button(self.main_frame, text="增加次数", command=lambda: self.update_count(1), bootstyle=PRIMARY).grid(column=1, row=2, sticky=W)
+        ttk.Button(self.main_frame, text="减少次数", command=lambda: self.update_count(-1), bootstyle=PRIMARY).grid(column=2, row=2, sticky=W)
+        ttk.Button(self.main_frame, text="重置次数", command=lambda: self.update_count(-self.yaml_message[self.record_name]), bootstyle=WARNING).grid(column=3, row=2, sticky=W)
         ttk.Button(self.main_frame, text="保存并返回", command=lambda: self.save_record(), bootstyle=SUCCESS).grid(column=1, row=3, sticky=W)
         ttk.Button(self.main_frame, text="取消并返回", command=lambda: self.showFrame(StartRecordFrame()), bootstyle=DANGER).grid(column=2, row=3, sticky=W)
     
@@ -33,11 +34,8 @@ class RecordFrame(BasicFrame):
         for child in self.main_frame.winfo_children(): 
             child.grid_configure(padx=5, pady=5)
 
-    def update_count(self,is_plus):
-        if is_plus:
-            self.yaml_message[self.record_name] += 1
-        else:
-            self.yaml_message[self.record_name] -= 1
+    def update_count(self, count_change):
+        self.yaml_message[self.record_name] += count_change
         self.record_text.set(f"记录内容：{self.record_name}  当前次数：{self.yaml_message[self.record_name]}")
 
     def save_record(self):
