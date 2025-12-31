@@ -8,6 +8,7 @@ from YamlHandler import YamlHandler
 from StartRecordFrame import StartRecordFrame
 import threading
 import datetime
+from tkinter import messagebox
 
 class RecordFrame(BasicFrame):
     def __init__(self, record_name):
@@ -30,7 +31,8 @@ class RecordFrame(BasicFrame):
         # self.lock = threading.Lock()
         # self.stop_thread_flag = False
         # self.th.start()
-        self.update_label_cb(root.master)
+        # self.update_label_cb(root.master)
+        self.record_text.set(f"记录内容：{self.record_name}，当前次数：{self.yaml_message[self.record_name]}")
         ttk.Label(self.main_frame, textvariable=self.record_text).grid(column=1, row=1, sticky=W)
         ttk.Button(self.main_frame, text="增加次数", command=lambda: self.update_count(1), bootstyle=PRIMARY).grid(column=1, row=2, sticky=W)
         ttk.Button(self.main_frame, text="减少次数", command=lambda: self.update_count(-1), bootstyle=PRIMARY).grid(column=2, row=2, sticky=W)
@@ -68,20 +70,24 @@ class RecordFrame(BasicFrame):
     #         time.sleep(0.1)
 
 
-    def update_label_cb(self, root):
-        diff = datetime.datetime.now() -  self.start_record_time
-        self.record_text.set(f"记录内容：{self.record_name}，当前次数：{self.yaml_message[self.record_name]}，开始记录时间：{self.start_record_time.strftime("%Y-%m-%d %H:%M:%S")}，总计时：{int(diff.total_seconds())}")
-        root.after(100, self.update_label_cb, root)
+    # def update_label_cb(self, root):
+    #     diff = datetime.datetime.now() -  self.start_record_time
+    #     self.record_text.set(f"记录内容：{self.record_name}，当前次数：{self.yaml_message[self.record_name]}，开始记录时间：{self.start_record_time.strftime("%Y-%m-%d %H:%M:%S")}，总计时：{int(diff.total_seconds())}")
+    #     root.after(100, self.update_label_cb, root)
         
 
 
-    # def destroyWidgets(self):
-    #     print("1")
-    #     self.lock.acquire()
-    #     print("2")
-    #     self.stop_thread_flag = True
-    #     self.lock.release()
-    #     print("waiting for stop")
-    #     self.th.join()
-    #     print("thread exited")
-    #     self.main_frame.destroy()
+    def destroyWidgets(self): 
+        total_seconds = int((datetime.datetime.now() -  self.start_record_time).total_seconds())
+        hours = total_seconds // 3600
+        minutes = (total_seconds % 3600) // 60
+        seconds = total_seconds % 60
+        if hours > 0:
+            messagebox.showinfo(message=f"记录内容：{self.record_name}，当前次数：{self.yaml_message[self.record_name]}，开始记录时间：{self.start_record_time.strftime("%Y-%m-%d %H:%M:%S")}，总计时：{hours}时{minutes}分{seconds}秒")
+        elif minutes > 0:
+            messagebox.showinfo(message=f"记录内容：{self.record_name}，当前次数：{self.yaml_message[self.record_name]}，开始记录时间：{self.start_record_time.strftime("%Y-%m-%d %H:%M:%S")}，总计时：{minutes}分{seconds}秒")
+        else:
+            messagebox.showinfo(message=f"记录内容：{self.record_name}，当前次数：{self.yaml_message[self.record_name]}，开始记录时间：{self.start_record_time.strftime("%Y-%m-%d %H:%M:%S")}，总计时：{seconds}秒")
+        super().destroyWidgets()
+
+        
