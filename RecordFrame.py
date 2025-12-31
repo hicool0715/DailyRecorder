@@ -6,6 +6,8 @@ from ttkbootstrap.constants import *
 from BasicFrame import BasicFrame
 from YamlHandler import YamlHandler
 from StartRecordFrame import StartRecordFrame
+import threading
+import datetime
 
 class RecordFrame(BasicFrame):
     def __init__(self, record_name):
@@ -22,7 +24,13 @@ class RecordFrame(BasicFrame):
         if self.record_name not in self.yaml_message:
             self.yaml_message[self.record_name] = 0
         self.record_text = tk.StringVar()
-        self.record_text.set(f"记录内容：{self.record_name}  当前次数：{self.yaml_message[self.record_name]}")
+        self.start_record_time = datetime.datetime.now()
+        
+        # self.th = threading.Thread(target=self.update_label_cb)
+        # self.lock = threading.Lock()
+        # self.stop_thread_flag = False
+        # self.th.start()
+        self.update_label_cb(root.master)
         ttk.Label(self.main_frame, textvariable=self.record_text).grid(column=1, row=1, sticky=W)
         ttk.Button(self.main_frame, text="增加次数", command=lambda: self.update_count(1), bootstyle=PRIMARY).grid(column=1, row=2, sticky=W)
         ttk.Button(self.main_frame, text="减少次数", command=lambda: self.update_count(-1), bootstyle=PRIMARY).grid(column=2, row=2, sticky=W)
@@ -39,5 +47,40 @@ class RecordFrame(BasicFrame):
         self.record_text.set(f"记录内容：{self.record_name}  当前次数：{self.yaml_message[self.record_name]}")
 
     def save_record(self):
-        YamlHandler(YamlHandler.record_dir,str(date.today())+'.yaml').write_yaml(self.yaml_message)
-        self.showFrame(StartRecordFrame())
+        self.record_text.set(f"记录内容：{self.record_name}，当前次数：{self.yaml_message[self.record_name]}，开始记录时间：{self.start_record_time.strftime("%Y-%m-%d %H:%M:%S")}，总计时：{(datetime.datetime.now() - self.start_record_time).strftime("%Y-%m-%d %H:%M:%S")}")
+
+    # def update_label_cb(self):
+    #     while True:
+    #         print("4")
+    #         self.lock.acquire()
+    #         print("5")
+    #         self.record_text.set(f"记录内容：{self.record_name}，当前次数：{self.yaml_message[self.record_name]}，开始记录时间：{self.start_record_time}，总计时：{datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")}")
+    #         print("5")
+    #         if self.stop_thread_flag == True:
+    #             print("stop thread")
+                
+    #             self.lock.release()
+    #             break
+    #         self.lock.release()
+    #         print("3")
+    #         import time
+    #         time.sleep(0.1)
+
+
+    def update_label_cb(self, root):
+        diff = datetime.datetime.now() -  self.start_record_time
+        self.record_text.set(f"记录内容：{self.record_name}，当前次数：{self.yaml_message[self.record_name]}，开始记录时间：{self.start_record_time.strftime("%Y-%m-%d %H:%M:%S")}，总计时：{int(diff.total_seconds())}")
+        root.after(100, self.update_label_cb, root)
+        
+
+
+    # def destroyWidgets(self):
+    #     print("1")
+    #     self.lock.acquire()
+    #     print("2")
+    #     self.stop_thread_flag = True
+    #     self.lock.release()
+    #     print("waiting for stop")
+    #     self.th.join()
+    #     print("thread exited")
+    #     self.main_frame.destroy()
