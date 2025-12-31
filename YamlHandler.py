@@ -4,7 +4,9 @@ from os import path, makedirs
 
 class YamlHandler:
     def __init__(self, file_dir, file_name):
-        self.filepath = f"{file_dir}/{file_name}"
+        import os
+        current_working_directory = os.getcwd()
+        self.filepath = f"{current_working_directory}/{file_dir}/{file_name}"
         if not path.exists(file_dir):
             makedirs(file_dir)
         if not path.exists(self.filepath):
