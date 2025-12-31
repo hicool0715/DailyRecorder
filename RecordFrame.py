@@ -47,7 +47,8 @@ class RecordFrame(BasicFrame):
         self.record_text.set(f"记录内容：{self.record_name}  当前次数：{self.yaml_message[self.record_name]}")
 
     def save_record(self):
-        self.record_text.set(f"记录内容：{self.record_name}，当前次数：{self.yaml_message[self.record_name]}，开始记录时间：{self.start_record_time.strftime("%Y-%m-%d %H:%M:%S")}，总计时：{(datetime.datetime.now() - self.start_record_time).strftime("%Y-%m-%d %H:%M:%S")}")
+        YamlHandler(YamlHandler.record_dir,str(date.today())+'.yaml').write_yaml(self.yaml_message)
+        self.showFrame(StartRecordFrame())
 
     # def update_label_cb(self):
     #     while True:
