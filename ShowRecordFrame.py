@@ -11,21 +11,21 @@ class ShowRecordFrame(BasicFrame):
         self.main_frame = ttk.Frame(root, padding=(3, 3, 12, 12))
         self.main_frame.grid(column=0, row=1, sticky=(N, W, E, S))
         self.current_date = date.today()
+
+        date_choise_frame = ttk.Frame(self.main_frame, padding=(3, 3, 12, 12))
+        date_choise_frame.pack(side=tk.TOP)
         self.label_text = tk.StringVar()
         self.label_text.set(f"今日记录内容({str(self.current_date)})：")
         self.list_val = tk.StringVar(value=[])
-        ttk.Button(self.main_frame, text="昨日", command=lambda: self.update_date(False), bootstyle=PRIMARY).grid(column=1, row=1, sticky=W)
-        ttk.Label(self.main_frame, textvariable=self.label_text).grid(column=2, row=1, sticky=W)
-        ttk.Button(self.main_frame, text="明日", command=lambda: self.update_date(True), bootstyle=PRIMARY).grid(column=3, row=1, sticky=W)
-        tk.Listbox(self.main_frame, listvariable=self.list_val).grid(column=1, row=2, sticky=(W, E))
+        ttk.Button(date_choise_frame, text="昨日", command=lambda: self.update_date(False), bootstyle=PRIMARY).pack(side=tk.LEFT, pady=5)
+        ttk.Label(date_choise_frame, textvariable=self.label_text).pack(side=tk.LEFT, expand=True)
+        ttk.Button(date_choise_frame, text="明日", command=lambda: self.update_date(True), bootstyle=PRIMARY).pack(side=tk.RIGHT, pady=5)
 
+
+        tk.Listbox(self.main_frame, listvariable=self.list_val).pack(side=tk.LEFT, padx=3, pady=5)
         self.update_list()
-
         from EntranceFrame import EntranceFrame
-        ttk.Button(self.main_frame, text="返回", command=lambda: self.showFrame(EntranceFrame()), bootstyle=DANGER).grid(column=1, row=3, sticky=W)
-        self.main_frame.columnconfigure(2, weight=1)
-        for child in self.main_frame.winfo_children(): 
-            child.grid_configure(padx=5, pady=5)
+        ttk.Button(self.main_frame, text="返回", command=lambda: self.showFrame(EntranceFrame()), bootstyle=DANGER).pack(side=tk.RIGHT, padx=12, pady=5)
         
     def update_date(self, is_next):
         oneday=datetime.timedelta(days=1) 

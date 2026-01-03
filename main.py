@@ -11,8 +11,9 @@ class MainFrame(BasicFrame):
 
         style_text = ttk.StringVar()
         style_text.set(["a", "b", "c", "d"])
-        style_cbx = ttk.Combobox(global_frame, text="style",values=['cosmo', 'flatly', 'journal', 'litera', 'lumen', 'minty', 'pulse', 'sandstone', 'united', 'yeti', 'morph', 'simplex', 'cerculean', 'solar', 'superhero', 'darkly', 'cyborg', 'vapor'], state='readonly')
-        style_cbx.grid(column=0, row=0, sticky=(N, E))
+        style_cbx = ttk.Combobox(global_frame, text="style",values=['cosmo', 'flatly', 'journal', 'litera', 'lumen', 'minty', 'pulse', 'sandstone', 'united', 'yeti', 'morph', 'simplex', 'cerculean', 'solar', 'superhero', 'darkly', 'cybo'
+        'rg', 'vapor'], state='readonly')
+        style_cbx.grid(column=0, row=0, padx=22, pady=10, sticky=(N, E))
         style_cbx.current(0)
         style_cbx.bind("<<ComboboxSelected>>", lambda event: ttk.Style(style_cbx.get()))
         

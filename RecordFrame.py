@@ -33,14 +33,21 @@ class RecordFrame(BasicFrame):
         # self.th.start()
         # self.update_label_cb(root.master)
         self.record_text.set(f"记录内容：{self.record_name}，当前次数：{self.yaml_message[self.record_name]}")
-        ttk.Label(self.main_frame, textvariable=self.record_text).grid(column=1, row=1, sticky=W)
-        ttk.Button(self.main_frame, text="增加次数", command=lambda: self.update_count(1), bootstyle=PRIMARY).grid(column=1, row=2, sticky=W)
-        ttk.Button(self.main_frame, text="减少次数", command=lambda: self.update_count(-1), bootstyle=PRIMARY).grid(column=2, row=2, sticky=W)
-        ttk.Button(self.main_frame, text="重置次数", command=lambda: self.update_count(-self.yaml_message[self.record_name]), bootstyle=WARNING).grid(column=3, row=2, sticky=W)
-        ttk.Button(self.main_frame, text="保存并返回", command=lambda: self.save_record(), bootstyle=SUCCESS).grid(column=1, row=3, sticky=W)
-        ttk.Button(self.main_frame, text="取消并返回", command=lambda: self.showFrame(StartRecordFrame()), bootstyle=DANGER).grid(column=2, row=3, sticky=W)
-    
-        self.main_frame.columnconfigure(2, weight=1)
+        label_frame = ttk.Frame(self.main_frame)
+        label_frame.grid(column=0, row=0, sticky=(N, W, E, S))
+        ttk.Label(label_frame, textvariable=self.record_text).grid(column=0, row=0, sticky=W)
+
+        times_btn_frame = ttk.Frame(self.main_frame)
+        times_btn_frame.grid(column=0, row=1, sticky=(N, W, E, S))
+        ttk.Button(times_btn_frame, text="增加次数", command=lambda: self.update_count(1), bootstyle=PRIMARY).pack(side=tk.LEFT, padx=5)
+        ttk.Button(times_btn_frame, text="重置次数", command=lambda: self.update_count(-self.yaml_message[self.record_name]), bootstyle=WARNING).pack(side=tk.LEFT, expand=True, padx=5)
+        ttk.Button(times_btn_frame, text="减少次数", command=lambda: self.update_count(-1), bootstyle=PRIMARY).pack(side=tk.RIGHT, padx=5)
+
+        back_btn_frame = ttk.Frame(self.main_frame)
+        back_btn_frame.grid(column=0, row=2, sticky=(N, W, E, S))
+        ttk.Button(back_btn_frame, text="保存并返回", command=lambda: self.save_record(), bootstyle=SUCCESS).pack(side=tk.LEFT, padx=5)
+        ttk.Button(back_btn_frame, text="取消并返回", command=lambda: self.showFrame(StartRecordFrame()), bootstyle=DANGER).pack(side=tk.RIGHT, padx=5)
+
         for child in self.main_frame.winfo_children(): 
             child.grid_configure(padx=5, pady=5)
 
